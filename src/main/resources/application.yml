@@ -33,3 +33,16 @@ app:
   cloudinary:
     resume-url: ${CLOUDINARY_URL}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics # Limit exposure for security
+  endpoint:
+    health:
+      show-details: when_authorized # Hide DB details from public
+      probes:
+        enabled: true # Enables Liveness and Readiness probes
+  info:
+    env:
+      enabled: true

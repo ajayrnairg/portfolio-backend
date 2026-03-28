@@ -31,7 +31,12 @@ spring:
     execution:
       pool:
         core-size: 1
-
+management:
+  health:
+    mail:
+      enabled: false # Prevents health check from failing due to dummy mail config
+    db:
+      enabled: true
 # Test environment variables
 MY_EMAIL: test@example.com
 GMAIL_APP_PASSWORD: dummy
