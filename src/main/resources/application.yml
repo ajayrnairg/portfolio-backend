@@ -1,7 +1,7 @@
 spring:
   datasource:
     # Use the 'jdbc' prefix and ensure sslmode=require is present
-    url: jdbc:postgresql://ep-restless-bar-a1t2tsxw-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+    url: ${DB_URL}
     username: ${DB_USERNAME} # Use env variables for security
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
