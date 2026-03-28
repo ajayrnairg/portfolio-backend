@@ -21,7 +21,7 @@ FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 
 # Copy the jar from build stage
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=build /app/build/libs/app.jar app.jar
 
 # Fine-tune memory for 512MB RAM Free Tier
 # Java 25 has great container awareness, but we'll be safe
