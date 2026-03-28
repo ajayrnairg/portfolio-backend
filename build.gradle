@@ -69,9 +69,9 @@ tasks.named('test') {
 }
 
 flyway {
-	url = 'jdbc:postgresql://ep-restless-bar-a1t2tsxw-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
-	user = System.getenv('DB_USERNAME') ?: 'neondb_owner'
-	password = System.getenv('DB_PASSWORD') ?: 'npg_eKX0faI8JZnk'
+	url = System.getenv('DB_URL') ?: 'jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1'
+	user = System.getenv('DB_USERNAME') ?: 'sa'
+	password = System.getenv('DB_PASSWORD') ?: ''
 }
 
 bootJar {

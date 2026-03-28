@@ -23,6 +23,13 @@ jobs:
       - name: Build and Test
         run: ./gradlew build
 
+        env:
+          JAVA_OPTS: "-Xmx512m"
+          # These must be set even for tests if the context tries to load them
+          MY_EMAIL: test@example.com
+          GMAIL_APP_PASSWORD: dummy
+          CLOUDINARY_URL: dummy
+
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest # Fixed the typo here
