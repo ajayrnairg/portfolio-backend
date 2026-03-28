@@ -25,10 +25,12 @@ jobs:
 
         env:
           JAVA_OPTS: "-Xmx512m"
-          # These must be set even for tests if the context tries to load them
           MY_EMAIL: test@example.com
           GMAIL_APP_PASSWORD: dummy
           CLOUDINARY_URL: dummy
+          DB_URL: jdbc:h2:mem:testdb           # Add these
+          DB_USERNAME: sa                       # Add these
+          DB_PASSWORD: ""
 
   deploy:
     needs: build-and-test
