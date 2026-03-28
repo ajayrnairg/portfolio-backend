@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    # Use the 'jdbc' prefix and ensure sslmode=require is present
+    url: jdbc:postgresql://ep-restless-bar-a1t2tsxw-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+    username: ${DB_USERNAME} # Use env variables for security
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate # Flyway handles the schema, Hibernate only validates
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MY_EMAIL}
+    password: ${GMAIL_APP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  cloudinary:
+    resume-url: ${CLOUDINARY_URL}
+
