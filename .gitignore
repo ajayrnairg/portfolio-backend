@@ -38,4 +38,3 @@ out/
 
 .gradle/
 .env
-application-test.yml
