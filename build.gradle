@@ -69,12 +69,11 @@ tasks.named('test') {
 }
 
 flyway {
-	url = System.getenv('DB_URL') ?: 'jdbc:h2:mem:testdb'
-	user = System.getenv('DB_USERNAME') ?: 'sa'
-	password = System.getenv('DB_PASSWORD') ?: ''
+	url = 'jdbc:postgresql://ep-restless-bar-a1t2tsxw-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+	user = System.getenv('DB_USERNAME') ?: 'neondb_owner'
+	password = System.getenv('DB_PASSWORD') ?: 'npg_eKX0faI8JZnk'
 }
 
 bootJar {
 	archiveFileName = 'app.jar'
 }
-

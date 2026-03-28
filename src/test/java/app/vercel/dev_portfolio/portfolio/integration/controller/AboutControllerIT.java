@@ -1,12 +1,11 @@
 package app.vercel.dev_portfolio.portfolio.integration.controller;
 
-import app.vercel.dev_portfolio.portfolio.integration.base.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import app.vercel.dev_portfolio.portfolio.integration.base.BaseIntegrationTest;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @Sql("/test-data-about.sql")
-@ActiveProfiles("test")
 public class AboutControllerIT extends BaseIntegrationTest {
 
     @Autowired
