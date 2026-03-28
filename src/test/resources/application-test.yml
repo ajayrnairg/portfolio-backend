@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    # Adding DB_CLOSE_DELAY=-1 keeps the in-memory DB alive for the whole test suite
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+  flyway:
+    enabled: false # Disable Flyway for H2 tests to avoid syntax conflicts
+  # ... existing datasource/jpa config ...
+  mail:
+    host: localhost
+    port: 25
+    username: test@example.com
+    password: dummy
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+  # Disable async in tests to make them deterministic and avoid thread leaks
+  task:
+    execution:
+      pool:
+        core-size: 1
+
+# Test environment variables
+MY_EMAIL: test@example.com
+GMAIL_APP_PASSWORD: dummy
+CLOUDINARY_URL: dummy
