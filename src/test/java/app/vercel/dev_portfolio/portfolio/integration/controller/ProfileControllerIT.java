@@ -28,6 +28,7 @@ class ProfileControllerIT extends BaseIntegrationTest {
         profileRepository.deleteAll();
 
         Profile profile = Profile.builder()
+                .id(1L)
                 .name("Ajay Nair")
                 .headline("Scalable Architecture")
                 .subHeadline("Full Stack Dev")
