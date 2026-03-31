@@ -1,8 +1,10 @@
 package app.vercel.dev_portfolio.portfolio.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
-import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "profile")
@@ -11,7 +13,6 @@ import java.time.OffsetDateTime;
 @Builder
 public class Profile {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

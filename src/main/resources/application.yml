@@ -32,6 +32,9 @@ spring:
 app:
   cloudinary:
     resume-url: ${CLOUDINARY_URL}
+  jwt:
+    secret: ${APP_JWT_SECRET}
+    expiration: ${APP_JWT_EXPIRATION}
 
 management:
   endpoints:
