@@ -40,12 +40,20 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, info, metrics # Limit exposure for security
+        include: health, info, metrics, prometheus # Added Prometheus for scraping
   endpoint:
     health:
-      show-details: when_authorized # Hide DB details from public
+      show-details: always # Shows DB and Cloudinary status in the JSON response
       probes:
-        enabled: true # Enables Liveness and Readiness probes
+        enabled: true # Vital for Render's zero-downtime deployment
+  health:
+    db:
+      enabled: true
+    mail:
+      enabled: true
+  metrics:
+    tags:
+      application: portfolio-backend
   info:
     env:
       enabled: true

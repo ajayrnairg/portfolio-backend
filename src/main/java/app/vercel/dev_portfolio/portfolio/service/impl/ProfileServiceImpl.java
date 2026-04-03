@@ -1,13 +1,15 @@
 package app.vercel.dev_portfolio.portfolio.service.impl;
 
 
-
 import app.vercel.dev_portfolio.portfolio.dto.ProfileResponse;
 import app.vercel.dev_portfolio.portfolio.entity.ResumeDownloadLog;
 import app.vercel.dev_portfolio.portfolio.mapper.ProfileMapper;
 import app.vercel.dev_portfolio.portfolio.repository.DownloadLogRepository;
 import app.vercel.dev_portfolio.portfolio.repository.ProfileRepository;
 import app.vercel.dev_portfolio.portfolio.service.ProfileService;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -23,9 +25,18 @@ public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository repository;
     private final ProfileMapper mapper;
     private final DownloadLogRepository downloadLogRepository;
+    private final MeterRegistry meterRegistry;
+    private Counter resumeDownloadCounter;
 
     @Value("${app.cloudinary.resume-url}")
     private String resumeUrl;
+
+    @PostConstruct
+    public void init() {
+        resumeDownloadCounter = Counter.builder("portfolio.resume.downloads")
+                .description("Total number of resume downloads")
+                .register(meterRegistry);
+    }
 
     @Override
     public ProfileResponse getProfileData() {
@@ -37,6 +48,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Transactional
     public String trackAndGetResumeUrl(HttpServletRequest request) {
+        resumeDownloadCounter.increment(); // This stat now appears in /actuator/metrics
         // 1. Log the download
         ResumeDownloadLog log = new ResumeDownloadLog();
         log.setIpAddress(request.getRemoteAddr());
