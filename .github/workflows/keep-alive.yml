@@ -7,4 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping Render Backend
-        run: curl -i https://portfolio-backend-fsqx.onrender.com/actuator/health
+        run: |
+          for i in {1..3}; do
+            echo "Attempt $i..."
+            curl -i -m 10 https://portfolio-backend-fsqx.onrender.com/actuator/health && break
+            if [ $i -lt 3 ]; then sleep 5; fi
+          done
