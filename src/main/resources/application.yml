@@ -17,18 +17,6 @@ spring:
     enabled: true
     baseline-on-migrate: true
 
-  mail:
-    host: smtp.gmail.com
-    port: 465
-    username: ${MY_EMAIL}
-    password: ${GMAIL_APP_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          ssl:
-            enable: true
-          auth: true
-
 app:
   cloudinary:
     resume-url: ${CLOUDINARY_URL}
@@ -48,8 +36,6 @@ management:
         enabled: true # Vital for Render's zero-downtime deployment
   health:
     db:
-      enabled: true
-    mail:
       enabled: true
   metrics:
     tags:
