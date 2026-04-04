@@ -19,15 +19,15 @@ spring:
 
   mail:
     host: smtp.gmail.com
-    port: 587
+    port: 465
     username: ${MY_EMAIL}
     password: ${GMAIL_APP_PASSWORD}
     properties:
       mail:
         smtp:
-          auth: true
-          starttls:
+          ssl:
             enable: true
+          auth: true
 
 app:
   cloudinary:
@@ -43,7 +43,7 @@ management:
         include: health, info, metrics, prometheus # Added Prometheus for scraping
   endpoint:
     health:
-      show-details: always # Shows DB and Cloudinary status in the JSON response
+      show-details: when-authorized # Shows DB and Cloudinary status in the JSON response
       probes:
         enabled: true # Vital for Render's zero-downtime deployment
   health:
