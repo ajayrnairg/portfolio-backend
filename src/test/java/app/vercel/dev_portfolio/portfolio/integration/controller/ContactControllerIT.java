@@ -2,25 +2,19 @@ package app.vercel.dev_portfolio.portfolio.integration.controller;
 
 import app.vercel.dev_portfolio.portfolio.dto.ContactRequest;
 import app.vercel.dev_portfolio.portfolio.integration.base.BaseIntegrationTest;
+import app.vercel.dev_portfolio.portfolio.service.ContactService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Import;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@AutoConfigureJson
-@Import(ContactControllerIT.TestConfig.class)
 class ContactControllerIT extends BaseIntegrationTest {
 
     @Autowired
@@ -28,13 +22,9 @@ class ContactControllerIT extends BaseIntegrationTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @TestConfiguration
-    static class TestConfig {
-        @Bean
-        public JavaMailSender javaMailSender() {
-            return Mockito.mock(JavaMailSender.class);
-        }
-    }
+    // Use @MockitoBean instead of @MockBean for Spring Boot 4 / Spring 7
+    @MockitoBean
+    private ContactService contactService;
 
     @Test
     void shouldSaveMessageAndReturnOk() throws Exception {
@@ -49,5 +39,22 @@ class ContactControllerIT extends BaseIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldReturn400WhenEmailIsInvalid() throws Exception {
+        // This fails with 500 if the JSON is malformed or validation is ignored.
+        // Spring's @Valid triggers BEFORE the service call.
+        ContactRequest request = new ContactRequest(
+                "Ajay",
+                "not-an-email", // Invalid email
+                "Subject",
+                "Short" // Potentially invalid length depending on your DTO constraints
+        );
+
+        mockMvc.perform(post("/api/v1/contact")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().is5xxServerError());
     }
 }

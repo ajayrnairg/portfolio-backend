@@ -15,17 +15,6 @@ spring:
   flyway:
     enabled: false # Disable Flyway for H2 tests to avoid syntax conflicts
   # ... existing datasource/jpa config ...
-  mail:
-    host: localhost
-    port: 25
-    username: test@example.com
-    password: dummy
-    properties:
-      mail:
-        smtp:
-          auth: false
-          starttls:
-            enable: false
   # Disable async in tests to make them deterministic and avoid thread leaks
   task:
     execution:
@@ -33,8 +22,6 @@ spring:
         core-size: 1
 management:
   health:
-    mail:
-      enabled: false # Prevents health check from failing due to dummy mail config
     db:
       enabled: true
 # Test environment variables
@@ -43,3 +30,5 @@ GMAIL_APP_PASSWORD: dummy
 CLOUDINARY_URL: dummy
 APP_JWT_SECRET: bXlTZWNyZXRLZXlGb3JUZXN0aW5nUHVycG9zZXNPbmx5
 APP_JWT_EXPIRATION: 86400000
+# Add this to your application-test.yml
+DISCORD_WEBHOOK_URL: https://discord.com/api/webhooks/mock/url
