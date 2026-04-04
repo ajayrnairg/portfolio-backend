@@ -1,15 +1,37 @@
 name: Keep Alive
 on:
   schedule:
-    - cron: '*/14 * * * *' # Runs every 14 minutes
+    - cron: '*/14 * * * *' # Runs every 14 minutes to beat the 15-min sleep timer
+  workflow_dispatch:      # Allows you to trigger it manually from the Actions tab
+
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Render Backend
+      - name: Wake up Render Backend
         run: |
-          for i in {1..3}; do
-            echo "Attempt $i..."
-            curl -i -m 10 https://portfolio-backend-fsqx.onrender.com/actuator/health && break
-            if [ $i -lt 3 ]; then sleep 5; fi
+          # Render free tier spin-up can take 30-60 seconds.
+          # We increase the connection timeout (-m) and use retries.
+          
+          URL="https://portfolio-backend-fsqx.onrender.com/actuator/health"
+          
+          echo "Sending wake-up signal to $URL"
+          
+          for i in {1..5}; do
+            echo "Attempt $i: Pinging server..."
+          
+            # -i: Include protocol headers
+            # -s: Silent mode
+            # -f: Fail silently on server errors
+            # -m 60: Wait up to 60 seconds for the full operation (important for cold starts)
+            if curl -s -f -m 60 "$URL"; then
+              echo "✅ Server is UP and AWAKE!"
+              exit 0
+            else
+              echo "⚠️ Server still spinning up... waiting 15 seconds before next attempt."
+              sleep 15
+            fi
           done
+
+          echo "❌ Server failed to respond after 5 attempts."
+          exit 1
