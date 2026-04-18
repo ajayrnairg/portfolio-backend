@@ -11,8 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 @AutoConfigureMockMvc // This allows @Autowired MockMvc to work
 class ProfileControllerIT extends BaseIntegrationTest {
@@ -45,5 +46,24 @@ class ProfileControllerIT extends BaseIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("Ajay Nair")))
                 .andExpect(jsonPath("$.headline", is("Scalable Architecture")));
+    }
+
+    @Test
+    void shouldTrackAndRedirectToResume() throws Exception {
+        mockMvc.perform(get("/api/v1/profile/resume/download"))
+                .andExpect(status().isFound())
+                .andExpect(header().string("Location", "dummy"));
+    }
+
+    @Test
+    void shouldReturnDownloadStats() throws Exception {
+        // Trigger a download to populate stats
+        mockMvc.perform(get("/api/v1/profile/resume/download"));
+
+        mockMvc.perform(get("/api/v1/profile/resume/stats"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.downloads").isArray())
+                .andExpect(jsonPath("$.downloads.length()", greaterThanOrEqualTo(1)))
+                .andExpect(jsonPath("$.downloads[0].ipAddress", is("127.0.0.1")));
     }
 }

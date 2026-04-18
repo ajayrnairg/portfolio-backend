@@ -1,3 +1,3 @@
 package app.vercel.dev_portfolio.portfolio.dto;
 
-public record SkillIconDTO(String icon, String title) {}
+public record SkillIconDTO(Long id, String icon, String title) {}

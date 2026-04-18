@@ -18,5 +18,6 @@ public class Skill {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private SkillCategory category;
 }

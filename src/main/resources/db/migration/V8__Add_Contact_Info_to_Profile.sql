@@ -1,0 +1,7 @@
+ALTER TABLE profile 
+ADD COLUMN email VARCHAR(255),
+ADD COLUMN linkedin_url VARCHAR(255),
+ADD COLUMN github_url VARCHAR(255),
+ADD COLUMN youtube_url VARCHAR(255),
+ADD COLUMN instagram_url VARCHAR(255),
+ADD COLUMN facebook_url VARCHAR(255);

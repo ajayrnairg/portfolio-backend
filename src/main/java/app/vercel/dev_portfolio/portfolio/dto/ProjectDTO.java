@@ -3,6 +3,7 @@ package app.vercel.dev_portfolio.portfolio.dto;
 import java.util.List;
 
 public record ProjectDTO(
+        Long id,
         String title,
         String path,
         List<String> techStack,
