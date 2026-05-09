@@ -31,12 +31,14 @@ management:
         include: health, info, metrics, prometheus # Added Prometheus for scraping
   endpoint:
     health:
-      show-details: when-authorized # Shows DB and Cloudinary status in the JSON response
+      show-details: when-authorized # DB and Cloudinary details only visible to authorized users
       probes:
         enabled: true # Vital for Render's zero-downtime deployment
   health:
     db:
-      enabled: true
+      enabled: false # Disabled: prevents SELECT 1 on every UptimeRobot ping (saves Neon free tier compute)
+    cloudinary:
+      enabled: false # Disabled: prevents HTTP call to Cloudinary on every ping
   metrics:
     tags:
       application: portfolio-backend
