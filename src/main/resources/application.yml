@@ -45,3 +45,7 @@ management:
   info:
     env:
       enabled: true
+
+logging:
+  level:
+    org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer: ERROR
